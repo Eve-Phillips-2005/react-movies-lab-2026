@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getGenres } from "../../api/tmdb-api";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
