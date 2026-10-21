@@ -1,1 +1,1 @@
-# react-movies-lab-2026
+# react-movie-labs
