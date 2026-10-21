@@ -58,6 +58,24 @@ export const getTopRatedMovies = () => {
     .then((json) => json.results);
 };
 
+/**
+ * Fetches movies currently playing in cinemas from TMDB
+ * Returns an array of movies for the Now Playing page
+ */
+export const getNowPlayingMovies = () => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to fetch now playing movies: ${response.status}`);
+      }
+
+      return response.json();
+    })
+    .then((json) => json.results);
+};
+
 export const getMovie = (args) => {
   //console.log(args)
   const [, idPart] = args.queryKey;
