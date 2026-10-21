@@ -22,6 +22,24 @@ export const getUpcomingMovies = () => {
     .then(json => json.results);
 };
 
+/**
+ * Retrieves popular movies from TMDB
+ * Returns an array of movies for the Popular Movies page
+ */
+export const getPopularMovies = () => {
+  return fetch(
+    `https://api.themoviedb.org/3/movie/popular?api_key=${import.meta.env.VITE_TMDB_KEY}`
+  )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to fetch popular movies: ${response.status}`);
+      }
+
+      return response.json();
+    })
+    .then((json) => json.results);
+};
+
 export const getMovie = (args) => {
   //console.log(args)
   const [, idPart] = args.queryKey;
