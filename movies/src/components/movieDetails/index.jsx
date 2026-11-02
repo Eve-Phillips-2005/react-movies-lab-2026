@@ -9,6 +9,8 @@ import Fab from "@mui/material/Fab";
 import Typography from "@mui/material/Typography";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from "../movieReviews"
+import Avatar from "@mui/material/Avatar";
+import Stack from "@mui/material/Stack";
 
 
 const root = {
@@ -21,11 +23,38 @@ const root = {
 };
 const chip = { margin: 0.5 };
 
-const MovieDetails = ({ movie }) => {  // Don't miss this!
+const MovieDetails = ({ movie, credits }) => {
 const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <>
+      <Typography variant="h5" component="h3">
+        Cast
+      </Typography>
+
+    <Stack spacing={2}>
+      {credits.cast.slice(0, 5).map((actor) => (
+        <Stack
+          key={actor.id}
+          direction="row"
+          spacing={2}
+          alignItems="center"
+        >
+          <Avatar
+            src={
+              actor.profile_path
+                ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
+                : undefined
+            }
+            alt={actor.name}
+          />
+          <Typography>
+            {actor.name} as {actor.character}
+          </Typography>
+        </Stack>
+      ))}
+    </Stack>
+
       <Typography variant="h5" component="h3">
         Overview
       </Typography>
