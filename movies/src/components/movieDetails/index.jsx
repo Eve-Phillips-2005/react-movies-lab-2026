@@ -51,7 +51,10 @@ const MovieDetails = ({ movie, credits, recommendations }) => {
               alt={actor.name}
             />
             <Typography>
-              {actor.name} as {actor.character}
+              <Link to={`/actors/${actor.id}`}>
+                {actor.name}
+              </Link>
+              {" as "}{actor.character}
             </Typography>
           </Stack>
         ))}
