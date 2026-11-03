@@ -3,6 +3,7 @@ import PageTemplate from "../components/templateMovieListPage";
 import Spinner from "../components/spinner";
 import { getPopularMovies } from "../api/tmdb-api";
 import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
+import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 const PopularMoviesPage = () => {
   // Fetch and cache popular movies separately from other movie lists.
@@ -28,7 +29,12 @@ const PopularMoviesPage = () => {
     <PageTemplate
       title="Popular Movies"
       movies={movies}
-      action={(movie) => <AddToFavoritesIcon movie={movie} />}
+      action={(movie) => (
+        <>
+          <AddToFavoritesIcon movie={movie} />
+          <AddToPlaylistIcon movie={movie} />
+        </>
+      )}
     />
   );
 };

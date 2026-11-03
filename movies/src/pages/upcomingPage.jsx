@@ -3,6 +3,7 @@ import Spinner from "../components/spinner";
 import PageTemplate from '../components/templateMovieListPage';
 import { getUpcomingMovies } from "../api/tmdb-api";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
+import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 
 // Fetch upcoming movies through React Query, which handles
 // caching, loading states, and errors automatically
@@ -25,9 +26,12 @@ const UpcomingPage = (props) => {
     <PageTemplate
       title='Upcoming Movies'
       movies={movies}
-      action={(movie) => {
-        return <AddToPlaylistIcon movie={movie} />;
-      }}
+      action={(movie) => (
+        <>
+          <AddToFavoritesIcon movie={movie} />
+          <AddToPlaylistIcon movie={movie} />
+        </>
+      )}
     />
   );
 };

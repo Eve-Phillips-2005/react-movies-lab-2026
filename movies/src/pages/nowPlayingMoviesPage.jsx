@@ -3,6 +3,7 @@ import PageTemplate from "../components/templateMovieListPage";
 import Spinner from "../components/spinner";
 import { getNowPlayingMovies } from "../api/tmdb-api";
 import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
+import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 const NowPlayingMoviesPage = () => {
   // Fetch and cache now playing movies separately from other movie lists.
@@ -28,7 +29,12 @@ const NowPlayingMoviesPage = () => {
     <PageTemplate
       title="Now Playing Movies"
       movies={movies}
-      action={(movie) => <AddToFavoritesIcon movie={movie} />}
+      action={(movie) => (
+        <>
+          <AddToFavoritesIcon movie={movie} />
+          <AddToPlaylistIcon movie={movie} />
+        </>
+      )}
     />
   );
 };

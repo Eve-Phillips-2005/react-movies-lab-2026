@@ -1,11 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export const MoviesContext = React.createContext(null);
 
 const MoviesContextProvider = (props) => {
-  const [favorites, setFavorites] = useState([]);
-  const [myReviews, setMyReviews] = useState({});
-  const [playlist, setPlaylist] = useState([]);
+  const [favorites, setFavorites] = useState(() => {
+    const savedFavorites = localStorage.getItem("favorites");
+    return savedFavorites ? JSON.parse(savedFavorites) : [];
+  });
+  const [myReviews, setMyReviews] = useState(() => {
+    const savedReviews = localStorage.getItem("myReviews");
+    return savedReviews ? JSON.parse(savedReviews) : {};
+  });
+  const [playlist, setPlaylist] = useState(() => {
+    const savedPlaylist = localStorage.getItem("playlist");
+    return savedPlaylist ? JSON.parse(savedPlaylist) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  useEffect(() => {
+    localStorage.setItem("myReviews", JSON.stringify(myReviews));
+  }, [myReviews]);
+
+  useEffect(() => {
+    localStorage.setItem("playlist", JSON.stringify(playlist));
+  }, [playlist]);
 
   const addToFavorites = (movie) => {
     let newFavorites = [];
@@ -24,7 +45,6 @@ const MoviesContextProvider = (props) => {
   const addReview = (movie, review) => {
     setMyReviews({ ...myReviews, [movie.id]: review });
   };
-  // console.log(myReviews);
 
   const addToPlaylist = (movie) => {
     let newPlaylist = [];
@@ -35,7 +55,10 @@ const MoviesContextProvider = (props) => {
     }
     setPlaylist(newPlaylist);
   };
-  // console.log(playlist);
+
+  const removeFromPlaylist = (movie) => {
+    setPlaylist(playlist.filter((movieId) => movieId !== movie.id));
+  };
 
   return (
     <MoviesContext.Provider
@@ -43,8 +66,10 @@ const MoviesContextProvider = (props) => {
         favorites,
         addToFavorites,
         removeFromFavorites,
+        myReviews,
         addReview,
         addToPlaylist,
+        removeFromPlaylist,
         playlist
       }}
     >

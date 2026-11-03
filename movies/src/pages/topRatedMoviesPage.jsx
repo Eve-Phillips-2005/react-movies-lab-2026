@@ -3,6 +3,7 @@ import PageTemplate from "../components/templateMovieListPage";
 import Spinner from "../components/spinner";
 import { getTopRatedMovies } from "../api/tmdb-api";
 import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
+import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 const TopRatedMoviesPage = () => {
   // Fetch and cache top-rated movies separately from other movie lists.
@@ -28,7 +29,12 @@ const TopRatedMoviesPage = () => {
     <PageTemplate
       title="Top Rated Movies"
       movies={movies}
-      action={(movie) => <AddToFavoritesIcon movie={movie} />}
+      action={(movie) => (
+        <>
+          <AddToFavoritesIcon movie={movie} />
+          <AddToPlaylistIcon movie={movie} />
+        </>
+      )}
     />
   );
 };
