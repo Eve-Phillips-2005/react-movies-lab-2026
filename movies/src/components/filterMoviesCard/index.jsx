@@ -13,12 +13,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import img from '../../images/pexels-dziana-hasanbekava-5480827.jpg'
 
-const formControl = 
-  {
-    margin: 1,
-    minWidth: "90%",
-    backgroundColor: "rgb(255, 255, 255)"
-  };
+const formControl =
+{
+  margin: 1,
+  minWidth: "90%",
+  backgroundColor: "rgb(255, 255, 255)"
+};
 
 export default function FilterMoviesCard(props) {
 
@@ -34,17 +34,18 @@ export default function FilterMoviesCard(props) {
   if (isError) {
     return <h1>{error.message}</h1>;
   }
-  const genres = data.genres;
-  if (genres[0].name !== "All"){
-    genres.unshift({ id: "0", name: "All" });
-  }
+
+  const genres = [
+    { id: "0", name: "All" },
+    ...data.genres,
+  ];
 
   const handleChange = (e, type, value) => {
     e.preventDefault();
-    props.onUserInput(type, value); 
+    props.onUserInput(type, value);
   };
 
-  const handleTextChange = (e, props) => {
+  const handleTextChange = (e) => {
     handleChange(e, "name", e.target.value);
   };
 
@@ -52,11 +53,15 @@ export default function FilterMoviesCard(props) {
     handleChange(e, "genre", e.target.value);
   };
 
+  const handleSortChange = (e) => {
+    handleChange(e, "sort", e.target.value);
+  };
+
   return (
-    <Card 
+    <Card
       sx={{
         backgroundColor: "rgb(204, 204, 0)"
-      }} 
+      }}
       variant="outlined">
       <CardContent>
         <Typography variant="h5" component="h1">
@@ -64,7 +69,7 @@ export default function FilterMoviesCard(props) {
           Filter the movies.
         </Typography>
         <TextField
-          sx={{...formControl}}
+          sx={{ ...formControl }}
           id="filled-search"
           label="Search field"
           type="search"
@@ -72,13 +77,13 @@ export default function FilterMoviesCard(props) {
           value={props.titleFilter}
           onChange={handleTextChange}
         />
-        <FormControl sx={{...formControl}}>
+        <FormControl sx={{ ...formControl }}>
           <InputLabel id="genre-label">Genre</InputLabel>
           <Select
             labelId="genre-label"
             id="genre-select"
-            defaultValue=""
             value={props.genreFilter}
+            label="Genre"
             onChange={handleGenreChange}
           >
             {genres.map((genre) => {
@@ -90,19 +95,28 @@ export default function FilterMoviesCard(props) {
             })}
           </Select>
         </FormControl>
+        <FormControl sx={{ ...formControl }}>
+          <InputLabel id="sort-label">Sort By</InputLabel>
+          <Select
+            labelId="sort-label"
+            id="sort-select"
+            value={props.sortOrder}
+            label="Sort By"
+            onChange={handleSortChange}
+          >
+            <MenuItem value="default">Default Order</MenuItem>
+            <MenuItem value="title-asc">Title: A to Z</MenuItem>
+            <MenuItem value="title-desc">Title: Z to A</MenuItem>
+            <MenuItem value="rating-desc">Highest Rated</MenuItem>
+            <MenuItem value="date-desc">Newest First</MenuItem>
+          </Select>
+        </FormControl>
       </CardContent>
       <CardMedia
         sx={{ height: 300 }}
         image={img}
         title="Filter"
       />
-      <CardContent>
-        <Typography variant="h5" component="h1">
-          <SearchIcon fontSize="large" />
-          Filter the movies.
-          <br />
-        </Typography>
-      </CardContent>
     </Card>
   );
 }
