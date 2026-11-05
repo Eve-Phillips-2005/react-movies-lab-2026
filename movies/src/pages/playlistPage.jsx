@@ -1,7 +1,6 @@
-
 import { useContext } from "react";
 import { useQueries } from "@tanstack/react-query";
-import { MoviesContext } from "../contexts/moviesContext";
+import { MoviesContext } from "../contexts/moviesContextDefinition.js";
 import { getMovie } from "../api/tmdb-api";
 import PageTemplate from "../components/templateMovieListPage";
 import Spinner from "../components/spinner";

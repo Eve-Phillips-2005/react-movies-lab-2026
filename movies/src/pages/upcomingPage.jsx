@@ -7,7 +7,7 @@ import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 
 // Fetch upcoming movies through React Query, which handles
 // caching, loading states, and errors automatically
-const UpcomingPage = (props) => {
+const UpcomingPage = () => {
   const { data: movies = [], error, isPending, isError } = useQuery({
     queryKey: ["upcoming"],
     queryFn: getUpcomingMovies,

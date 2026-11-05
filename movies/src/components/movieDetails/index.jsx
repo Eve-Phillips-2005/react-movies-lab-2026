@@ -1,169 +1,253 @@
-
 import { useState } from "react";
-import Chip from "@mui/material/Chip";
-import Paper from "@mui/material/Paper";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import MonetizationIcon from "@mui/icons-material/MonetizationOn";
-import StarRate from "@mui/icons-material/StarRate";
-import NavigationIcon from "@mui/icons-material/Navigation";
-import Fab from "@mui/material/Fab";
-import Typography from "@mui/material/Typography";
-import Drawer from "@mui/material/Drawer";
-import MovieReviews from "../movieReviews";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
 import { Link } from "react-router";
+import {
+  Box,
+  Typography,
+  Divider,
+  Chip,
+  Button,
+  Drawer,
+  IconButton,
+} from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
+import CloseIcon from "@mui/icons-material/Close";
+import MovieReviews from "../movieReviews";
 
-const root = {
-  display: "flex",
-  justifyContent: "center",
-  flexWrap: "wrap",
-  listStyle: "none",
-  padding: 1.5,
-  margin: 0,
+const sectionHeading = {
+  fontFamily: "Georgia, serif",
+  fontSize: "1.7rem",
+  mb: 2,
 };
 
-const chip = { margin: 0.5 };
+const sectionLabel = {
+  fontSize: "0.7rem",
+  letterSpacing: "0.16em",
+  textTransform: "uppercase",
+  color: "#C77B68",
+  mb: 1,
+};
 
-const MovieDetails = ({ movie, credits, recommendations }) => {
+export default function MovieDetails({
+  movie,
+  credits,
+  recommendations,
+}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const cast = credits?.cast?.slice(0, 5) || [];
+  const suggested = recommendations?.results?.slice(0, 5) || [];
+
+  const facts = [
+    ["Release", movie.release_date || "Unknown"],
+    ["Runtime", movie.runtime ? `${movie.runtime} min` : "Unknown"],
+    ["Original language", movie.original_language?.toUpperCase() || "—"],
+    ["Revenue", movie.revenue ? `$${movie.revenue.toLocaleString()}` : "—"],
+  ];
+
   return (
-    <>
-      <Typography variant="h5" component="h3">
-        Cast
+    <Box>
+      <Typography sx={sectionLabel}>Synopsis</Typography>
+
+      <Typography sx={sectionHeading} component="h2">
+        The story
       </Typography>
 
-      <Stack spacing={2}>
-        {credits.cast.slice(0, 5).map((actor) => (
-          <Stack
-            key={actor.id}
-            direction="row"
-            spacing={2}
-            alignItems="center"
-          >
-            <Avatar
-              src={
-                actor.profile_path
-                  ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
-                  : undefined
-              }
-              alt={actor.name}
-            />
-            <Typography>
-              <Link to={`/actors/${actor.id}`}>
-                {actor.name}
-              </Link>
-              {" as "}{actor.character}
-            </Typography>
-          </Stack>
-        ))}
-      </Stack>
-
-      <Typography variant="h5" component="h3">
-        Recommended Movies
-      </Typography>
-
-      <Stack spacing={2}>
-        {recommendations.results.slice(0, 5).map((recommendedMovie) => (
-          <Stack
-            key={recommendedMovie.id}
-            direction="row"
-            spacing={2}
-            alignItems="center"
-          >
-            <Avatar
-              variant="rounded"
-              src={
-                recommendedMovie.poster_path
-                  ? `https://image.tmdb.org/t/p/w185${recommendedMovie.poster_path}`
-                  : undefined
-              }
-              alt={recommendedMovie.title}
-              sx={{ width: 60, height: 90 }}
-            />
-            <Typography>
-              <Link to={`/movies/${recommendedMovie.id}`}>
-                {recommendedMovie.title}
-              </Link>
-            </Typography>
-          </Stack>
-        ))}
-      </Stack>
-
-      <Typography variant="h5" component="h3">
-        Overview
-      </Typography>
-
-      <Typography variant="h6" component="p">
-        {movie.overview}
-      </Typography>
-
-      <Paper component="ul" sx={{ ...root }}>
-        <li>
-          <Chip label="Genres" sx={{ ...chip }} color="primary" />
-        </li>
-        {movie.genres.map((g) => (
-          <li key={g.name}>
-            <Chip label={g.name} sx={{ ...chip }} />
-          </li>
-        ))}
-      </Paper>
-
-      <Paper component="ul" sx={{ ...root }}>
-        <Chip
-          icon={<AccessTimeIcon />}
-          label={`${movie.runtime} min.`}
-        />
-        <Chip
-          icon={<MonetizationIcon />}
-          label={`${movie.revenue.toLocaleString()}`}
-        />
-        <Chip
-          icon={<StarRate />}
-          label={`${movie.vote_average} (${movie.vote_count})`}
-        />
-        <Chip label={`Released: ${movie.release_date}`} />
-      </Paper>
-
-      <Paper component="ul" sx={{ ...root }}>
-        <li>
-          <Chip
-            label="Production Countries"
-            sx={{ ...chip }}
-            color="primary"
-          />
-        </li>
-        {movie.production_countries.map((c) => (
-          <li key={c.name}>
-            <Chip label={c.name} sx={{ ...chip }} />
-          </li>
-        ))}
-      </Paper>
-
-      <Fab
-        color="secondary"
-        variant="extended"
-        onClick={() => setDrawerOpen(true)}
+      <Typography
         sx={{
-          position: "fixed",
-          bottom: "1em",
-          right: "1em",
+          lineHeight: 1.9,
+          color: "text.secondary",
+          fontSize: "1rem",
+          mb: 4,
         }}
       >
-        <NavigationIcon />
-        Reviews
-      </Fab>
+        {movie.overview || "No synopsis is available."}
+      </Typography>
+
+      <Divider sx={{ mb: 3 }} />
+
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr 1fr",
+            sm: "repeat(4, 1fr)",
+          },
+          gap: 2,
+          mb: 4,
+        }}
+      >
+        {facts.map(([label, value]) => (
+          <Box key={label}>
+            <Typography sx={sectionLabel}>{label}</Typography>
+            <Typography sx={{ fontSize: "0.9rem" }}>
+              {value}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 4 }}>
+        {movie.genres?.map((genre) => (
+          <Chip
+            key={genre.id}
+            label={genre.name}
+            variant="outlined"
+            size="small"
+            sx={{ borderColor: "#34425A", borderRadius: "2px" }}
+          />
+        ))}
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+          mb: 5,
+        }}
+      >
+        <StarIcon sx={{ color: "#C77B68" }} />
+        <Typography sx={{ fontSize: "1.1rem" }}>
+          {movie.vote_average?.toFixed(1) || "N/A"} / 10
+        </Typography>
+        <Typography color="text.secondary" sx={{ fontSize: "0.8rem" }}>
+          ({movie.vote_count?.toLocaleString() || 0} votes)
+        </Typography>
+      </Box>
+
+      <Divider sx={{ mb: 4 }} />
+
+      <Typography sx={sectionLabel}>People</Typography>
+      <Typography component="h2" sx={sectionHeading}>
+        Principal cast
+      </Typography>
+
+      <Box sx={{ mb: 5 }}>
+        {cast.length ? cast.map((actor) => (
+          <Box
+            key={actor.id}
+            component={Link}
+            to={`/actors/${actor.id}`}
+            sx={{
+              display: "flex",
+              gap: 2,
+              alignItems: "center",
+              py: 1.5,
+              borderBottom: "1px solid #34425A",
+              textDecoration: "none",
+              color: "inherit",
+              "&:hover .actor-name": { color: "#C77B68" },
+            }}
+          >
+            {actor.profile_path ? (
+              <Box
+                component="img"
+                src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
+                alt={actor.name}
+                sx={{
+                  width: 48,
+                  height: 64,
+                  objectFit: "cover",
+                }}
+              />
+            ) : (
+              <Box sx={{ width: 48, height: 64, bgcolor: "#34425A" }} />
+            )}
+
+            <Box>
+              <Typography className="actor-name" sx={{ fontWeight: 600 }}>
+                {actor.name}
+              </Typography>
+              <Typography color="text.secondary" sx={{ fontSize: "0.8rem" }}>
+                {actor.character || "Cast member"}
+              </Typography>
+            </Box>
+          </Box>
+        )) : (
+          <Typography color="text.secondary">
+            Cast information unavailable.
+          </Typography>
+        )}
+      </Box>
+
+      <Typography sx={sectionLabel}>Further viewing</Typography>
+      <Typography component="h2" sx={sectionHeading}>
+        Recommended films
+      </Typography>
+
+      <Box sx={{ display: "grid", gap: 1.5, mb: 5 }}>
+        {suggested.length ? suggested.map((film) => (
+          <Box
+            key={film.id}
+            component={Link}
+            to={`/movies/${film.id}`}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              color: "inherit",
+              textDecoration: "none",
+              borderBottom: "1px solid #34425A",
+              pb: 1.5,
+              "&:hover": { color: "#C77B68" },
+            }}
+          >
+            {film.poster_path ? (
+              <Box
+                component="img"
+                src={`https://image.tmdb.org/t/p/w185${film.poster_path}`}
+                alt={`${film.title} poster`}
+                sx={{ width: 48, height: 72, objectFit: "cover" }}
+              />
+            ) : (
+              <Box sx={{ width: 48, height: 72, bgcolor: "#34425A" }} />
+            )}
+
+            <Typography sx={{ fontFamily: "Georgia, serif" }}>
+              {film.title}
+            </Typography>
+          </Box>
+        )) : (
+          <Typography color="text.secondary">
+            No recommendations available.
+          </Typography>
+        )}
+      </Box>
+
+      <Button
+        variant="outlined"
+        onClick={() => setDrawerOpen(true)}
+        sx={{ borderColor: "#A4A2C9", mb: 2 }}
+      >
+        Read audience reviews
+      </Button>
 
       <Drawer
-        anchor="top"
+        anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        PaperProps={{
+          sx: {
+            width: { xs: "100%", sm: 520 },
+            bgcolor: "#101827",
+            p: 3,
+          },
+        }}
       >
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
+          <Typography sx={{ fontFamily: "Georgia, serif", fontSize: "1.8rem" }}>
+            Audience reviews
+          </Typography>
+          <IconButton
+            aria-label="Close reviews"
+            onClick={() => setDrawerOpen(false)}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
         <MovieReviews movie={movie} />
       </Drawer>
-    </>
+    </Box>
   );
-};
-
-export default MovieDetails;
+}

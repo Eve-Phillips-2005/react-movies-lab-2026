@@ -1,86 +1,161 @@
 import { useContext } from "react";
-import { MoviesContext } from "../../contexts/moviesContext";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import CardHeader from "@mui/material/CardHeader";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import CalendarIcon from "@mui/icons-material/CalendarTodayTwoTone";
-import StarRateIcon from "@mui/icons-material/StarRate";
-import Grid from "@mui/material/Grid";
-import Avatar from '@mui/material/Avatar';
-import img from '../../images/film-poster-placeholder.png';
 import { Link } from "react-router";
+import { MoviesContext } from "../../contexts/moviesContextDefinition.js";
+import {
+  Card,
+  Box,
+  Typography,
+  IconButton,
+  Tooltip,
+} from "@mui/material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import StarIcon from "@mui/icons-material/Star";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import img from "../../images/film-poster-placeholder.png";
 
 export default function MovieCard({ movie, action }) {
+  const { favorites } = useContext(MoviesContext);
+  const isFavorite = favorites.includes(movie.id);
 
-  const { favorites, addToFavorites } = useContext(MoviesContext);
+  const poster = movie.poster_path
+    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+    : img;
 
-  if (favorites.find((id) => id === movie.id)) {
-    movie.favorite = true;
-  } else {
-    movie.favorite = false
-  }
+  const year = movie.release_date
+    ? movie.release_date.slice(0, 4)
+    : "TBA";
 
-  const handleAddToFavorite = (e) => {
-    e.preventDefault();
-    addToFavorites(movie);
-  };
-  
+  const rating = Number.isFinite(movie.vote_average)
+    ? movie.vote_average.toFixed(1)
+    : "N/A";
+
   return (
-    <Card>
-      <CardHeader
-        avatar={
-          movie.favorite ? (
-            <Avatar sx={{ backgroundColor: 'red' }}>
-              <FavoriteIcon />
-            </Avatar>
-          ) : null
-        }
-        title={
-          <Typography variant="h5" component="p">
-            {movie.title}{" "}
+    <Card
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#1B2940",
+        border: "1px solid #34425A",
+        borderRadius: "3px",
+        overflow: "hidden",
+        transition: "border-color 0.2s ease",
+        "&:hover": {
+          borderColor: "#A4A2C9",
+        },
+      }}
+    >
+      <Box sx={{ position: "relative" }}>
+        <Box
+          component="img"
+          src={poster}
+          alt={`${movie.title} poster`}
+          sx={{
+            display: "block",
+            width: "100%",
+            aspectRatio: "2 / 3",
+            objectFit: "cover",
+          }}
+        />
+
+        {isFavorite && (
+          <Box
+            sx={{
+              position: "absolute",
+              top: 10,
+              right: 10,
+              backgroundColor: "#101827",
+              p: 0.8,
+              display: "flex",
+              border: "1px solid #34425A",
+            }}
+          >
+            <FavoriteIcon
+              sx={{ fontSize: 18, color: "#C77B68" }}
+            />
+          </Box>
+        )}
+      </Box>
+
+      <Box
+        sx={{
+          px: 2,
+          pt: 2,
+          pb: 1,
+          flexGrow: 1,
+        }}
+      >
+        <Typography
+          sx={{
+            fontFamily: "Georgia, serif",
+            fontSize: "1.12rem",
+            lineHeight: 1.35,
+            minHeight: "3rem",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+          }}
+        >
+          {movie.title}
+        </Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mt: 1.5,
+          }}
+        >
+          <Typography
+            sx={{
+              color: "text.secondary",
+              fontSize: "0.8rem",
+            }}
+          >
+            {year}
           </Typography>
-        }
-      />
-      <CardMedia
-        sx={{ height: 500 }}
-        image={
-          movie.poster_path
-            ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-            : img
-        }
-      />
-      <CardContent>
-        <Grid container>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
-              <CalendarIcon fontSize="small" />
-              {movie.release_date}
+
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.4 }}>
+            <StarIcon sx={{ fontSize: 16, color: "#C77B68" }} />
+            <Typography sx={{ fontSize: "0.8rem" }}>
+              {rating}
             </Typography>
-          </Grid>
-          <Grid size={{xs: 6}}>
-            <Typography variant="h6" component="p">
-              <StarRateIcon fontSize="small" />
-              {"  "} {movie.vote_average}{" "}
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardContent>
-      <CardActions disableSpacing>
-        
-        {action(movie)}
-        
-        <Link to={`/movies/${movie.id}`}>
-          <Button variant="outlined" size="medium" color="primary">
-            More Info ...
-          </Button>
-        </Link>
-        
-      </CardActions>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box
+        sx={{
+          px: 1,
+          py: 0.8,
+          borderTop: "1px solid #34425A",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 1,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {action?.(movie)}
+        </Box>
+
+        <Tooltip title="View film details">
+          <IconButton
+            component={Link}
+            to={`/movies/${movie.id}`}
+            aria-label={`View details for ${movie.title}`}
+            size="small"
+            sx={{
+              color: "#E7DDCC",
+              "&:hover": { color: "#C77B68" },
+            }}
+          >
+            <ArrowOutwardIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </Box>
     </Card>
   );
 }

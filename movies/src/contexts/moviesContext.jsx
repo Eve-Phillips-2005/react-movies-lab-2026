@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
-
-export const MoviesContext = React.createContext(null);
+import { useState, useEffect } from "react";
+import { MoviesContext } from "./moviesContextDefinition.js";
 
 const MoviesContextProvider = (props) => {
   const [favorites, setFavorites] = useState(() => {
@@ -29,13 +28,11 @@ const MoviesContextProvider = (props) => {
   }, [playlist]);
 
   const addToFavorites = (movie) => {
-    let newFavorites = [];
-    if (!favorites.includes(movie.id)) {
-      newFavorites = [...favorites, movie.id];
-    } else {
-      newFavorites = [...favorites];
-    }
-    setFavorites(newFavorites);
+    setFavorites((current) =>
+      current.includes(movie.id)
+        ? current
+        : [...current, movie.id]
+    );
   };
 
   const removeFromFavorites = (movie) => {
@@ -47,13 +44,11 @@ const MoviesContextProvider = (props) => {
   };
 
   const addToPlaylist = (movie) => {
-    let newPlaylist = [];
-    if (!playlist.includes(movie.id)) {
-      newPlaylist = [...playlist, movie.id];
-    } else {
-      newPlaylist = [...playlist];
-    }
-    setPlaylist(newPlaylist);
+    setPlaylist((current) =>
+      current.includes(movie.id)
+        ? current
+        : [...current, movie.id]
+    );
   };
 
   const removeFromPlaylist = (movie) => {

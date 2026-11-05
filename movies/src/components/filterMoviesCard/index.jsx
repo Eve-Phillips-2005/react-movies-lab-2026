@@ -1,122 +1,117 @@
-import { useQuery } from '@tanstack/react-query';
-import Spinner from '../spinner';
+import { useQuery } from "@tanstack/react-query";
 import { getGenres } from "../../api/tmdb-api";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
-import SearchIcon from "@mui/icons-material/Search";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import img from '../../images/pexels-dziana-hasanbekava-5480827.jpg'
-
-const formControl =
-{
-  margin: 1,
-  minWidth: "90%",
-  backgroundColor: "rgb(255, 255, 255)"
-};
+import Spinner from "../spinner";
+import {
+  Box,
+  Typography,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Divider,
+} from "@mui/material";
+import TuneIcon from "@mui/icons-material/Tune";
 
 export default function FilterMoviesCard(props) {
-
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ['genres'],
+    queryKey: ["genres"],
     queryFn: getGenres,
   });
 
-  if (isPending) {
-    return <Spinner />;
-  }
-
-  if (isError) {
-    return <h1>{error.message}</h1>;
-  }
+  if (isPending) return <Spinner />;
+  if (isError) return <Typography>{error.message}</Typography>;
 
   const genres = [
-    { id: "0", name: "All" },
+    { id: "0", name: "All genres" },
     ...data.genres,
   ];
 
-  const handleChange = (e, type, value) => {
-    e.preventDefault();
-    props.onUserInput(type, value);
-  };
-
-  const handleTextChange = (e) => {
-    handleChange(e, "name", e.target.value);
-  };
-
-  const handleGenreChange = (e) => {
-    handleChange(e, "genre", e.target.value);
-  };
-
-  const handleSortChange = (e) => {
-    handleChange(e, "sort", e.target.value);
+  const fieldStyles = {
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: "#101827",
+      borderRadius: "3px",
+    },
   };
 
   return (
-    <Card
+    <Box
       sx={{
-        backgroundColor: "rgb(204, 204, 0)"
+        border: "1px solid",
+        borderColor: "divider",
+        backgroundColor: "background.paper",
+        p: 2.5,
       }}
-      variant="outlined">
-      <CardContent>
-        <Typography variant="h5" component="h1">
-          <SearchIcon fontSize="large" />
-          Filter the movies.
+    >
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1.2 }}>
+        <TuneIcon sx={{ color: "#C77B68" }} />
+        <Typography
+          sx={{
+            fontFamily: "Georgia, serif",
+            fontSize: "1.3rem",
+          }}
+        >
+          Refine collection
         </Typography>
+      </Box>
+
+      <Typography
+        sx={{
+          mt: 1,
+          mb: 2.5,
+          color: "text.secondary",
+          fontSize: "0.8rem",
+          lineHeight: 1.7,
+        }}
+      >
+        Find a film by title, genre or rating.
+      </Typography>
+
+      <Divider sx={{ mb: 3 }} />
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
         <TextField
-          sx={{ ...formControl }}
-          id="filled-search"
-          label="Search field"
+          fullWidth
+          label="Search titles"
           type="search"
-          variant="filled"
+          size="small"
           value={props.titleFilter}
-          onChange={handleTextChange}
+          onChange={(e) => props.onUserInput("name", e.target.value)}
+          sx={fieldStyles}
         />
-        <FormControl sx={{ ...formControl }}>
+
+        <FormControl fullWidth size="small" sx={fieldStyles}>
           <InputLabel id="genre-label">Genre</InputLabel>
           <Select
             labelId="genre-label"
-            id="genre-select"
             value={props.genreFilter}
             label="Genre"
-            onChange={handleGenreChange}
+            onChange={(e) => props.onUserInput("genre", e.target.value)}
           >
-            {genres.map((genre) => {
-              return (
-                <MenuItem key={genre.id} value={genre.id}>
-                  {genre.name}
-                </MenuItem>
-              );
-            })}
+            {genres.map((genre) => (
+              <MenuItem key={genre.id} value={genre.id}>
+                {genre.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
-        <FormControl sx={{ ...formControl }}>
-          <InputLabel id="sort-label">Sort By</InputLabel>
+
+        <FormControl fullWidth size="small" sx={fieldStyles}>
+          <InputLabel id="sort-label">Sort by</InputLabel>
           <Select
             labelId="sort-label"
-            id="sort-select"
             value={props.sortOrder}
-            label="Sort By"
-            onChange={handleSortChange}
+            label="Sort by"
+            onChange={(e) => props.onUserInput("sort", e.target.value)}
           >
-            <MenuItem value="default">Default Order</MenuItem>
-            <MenuItem value="title-asc">Title: A to Z</MenuItem>
-            <MenuItem value="title-desc">Title: Z to A</MenuItem>
-            <MenuItem value="rating-desc">Highest Rated</MenuItem>
-            <MenuItem value="date-desc">Newest First</MenuItem>
+            <MenuItem value="default">Default order</MenuItem>
+            <MenuItem value="title-asc">Title: A–Z</MenuItem>
+            <MenuItem value="title-desc">Title: Z–A</MenuItem>
+            <MenuItem value="rating-desc">Highest rated</MenuItem>
+            <MenuItem value="date-desc">Newest first</MenuItem>
           </Select>
         </FormControl>
-      </CardContent>
-      <CardMedia
-        sx={{ height: 300 }}
-        image={img}
-        title="Filter"
-      />
-    </Card>
+      </Box>
+    </Box>
   );
 }

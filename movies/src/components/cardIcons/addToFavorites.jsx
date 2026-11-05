@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MoviesContext } from "../../contexts/moviesContext";
+import { MoviesContext } from "../../contexts/moviesContextDefinition.js";
 import IconButton from "@mui/material/IconButton";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 

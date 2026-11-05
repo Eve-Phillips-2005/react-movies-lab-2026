@@ -1,16 +1,44 @@
-import Typography from "@mui/material/Typography";
+import { Box, Typography, Divider } from "@mui/material";
 
-const MovieReview =  ({ review }) => {
+export default function MovieReview({ review }) {
   return (
-    <>
-      <Typography variant="h5" component="h3">
-        Review By: {review.author}
+    <Box sx={{ maxWidth: 760 }}>
+      <Typography
+        sx={{
+          color: "#C77B68",
+          fontSize: "0.72rem",
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          mb: 1,
+        }}
+      >
+        Audience review
       </Typography>
 
-      <Typography variant="h6" component="p">
-        {review.content} 
+      <Typography
+        component="h2"
+        sx={{
+          fontFamily: "Georgia, serif",
+          fontSize: { xs: "1.8rem", md: "2.4rem" },
+          mb: 1,
+        }}
+      >
+        A review by {review.author}
       </Typography>
-    </>
+
+      <Divider sx={{ my: 3 }} />
+
+      <Typography
+        sx={{
+          color: "text.secondary",
+          fontSize: "1rem",
+          lineHeight: 1.95,
+          whiteSpace: "pre-wrap",
+          overflowWrap: "anywhere",
+        }}
+      >
+        {review.content}
+      </Typography>
+    </Box>
   );
-};
-export default MovieReview
+}
