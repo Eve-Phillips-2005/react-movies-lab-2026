@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import FilterCard from "../filterMoviesCard";
 import MovieList from "../movieList";
@@ -11,15 +10,20 @@ export default function MovieListPageTemplate({ movies, title, action }) {
 
   const genreId = Number(genreFilter);
 
-  let displayedMovies = movies
-    .filter((movie) =>
-      movie.title.toLowerCase().includes(nameFilter.toLowerCase())
-    )
-    .filter((movie) =>
-      genreId > 0 ? movie.genre_ids?.includes(genreId) : true
-    );
+  // Filter movies by title and genre
+  let displayedMovies = movies.filter((movie) => {
+    const matchesTitle = movie.title
+      .toLowerCase()
+      .includes(nameFilter.toLowerCase());
 
-  displayedMovies = [...displayedMovies].sort((a, b) => {
+    const matchesGenre =
+      genreId === 0 || movie.genre_ids?.includes(genreId);
+
+    return matchesTitle && matchesGenre;
+  });
+
+  // Sort the filtered movies
+  displayedMovies = displayedMovies.sort((a, b) => {
     switch (sortOrder) {
       case "title-asc":
         return a.title.localeCompare(b.title);
@@ -35,6 +39,7 @@ export default function MovieListPageTemplate({ movies, title, action }) {
     }
   });
 
+  // Update search filter and sort options
   const handleChange = (type, value) => {
     if (type === "name") setNameFilter(value);
     if (type === "genre") setGenreFilter(value);

@@ -11,6 +11,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function ActorDetailsPage() {
+  // Get the actor id from the URL
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -19,6 +20,7 @@ export default function ActorDetailsPage() {
     error,
     isPending,
     isError,
+    // Get actor details from TMDB
   } = useQuery({
     queryKey: ["actor", { id }],
     queryFn: getActorDetails,
@@ -29,6 +31,7 @@ export default function ActorDetailsPage() {
     error: creditsError,
     isPending: creditsPending,
     isError: creditsIsError,
+    // Get the actors movie credits
   } = useQuery({
     queryKey: ["actorMovieCredits", { id }],
     queryFn: getActorMovieCredits,
@@ -44,6 +47,7 @@ export default function ActorDetailsPage() {
     );
   }
 
+    // Show the ten most recent films with release dates
   const films = [...(movieCredits.cast || [])]
     .filter((film) => film.release_date)
     .sort((a, b) => b.release_date.localeCompare(a.release_date))

@@ -14,6 +14,7 @@ import {
 import TuneIcon from "@mui/icons-material/Tune";
 
 export default function FilterMoviesCard(props) {
+  // Get genres for the filter menu
   const { data, error, isPending, isError } = useQuery({
     queryKey: ["genres"],
     queryFn: getGenres,
@@ -22,6 +23,7 @@ export default function FilterMoviesCard(props) {
   if (isPending) return <Spinner />;
   if (isError) return <Typography>{error.message}</Typography>;
 
+  // Include an option to show all genres
   const genres = [
     { id: "0", name: "All genres" },
     ...data.genres,

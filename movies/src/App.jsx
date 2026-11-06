@@ -21,6 +21,7 @@ import PlaylistPage from "./pages/playlistPage";
 
 import SiteHeader from "./components/siteHeader";
 
+// Set up React Query caching
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -41,6 +42,7 @@ export default function App() {
           <SiteHeader />
 
           <MoviesContextProvider>
+            {/* Application routes */}
             <Routes>
               <Route path="/" element={<HomePage />} />
 

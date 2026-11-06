@@ -2,19 +2,23 @@ import { useState, useEffect } from "react";
 import { MoviesContext } from "./moviesContextDefinition.js";
 
 const MoviesContextProvider = (props) => {
+  // Load saved data from local storage
   const [favorites, setFavorites] = useState(() => {
     const savedFavorites = localStorage.getItem("favorites");
     return savedFavorites ? JSON.parse(savedFavorites) : [];
   });
+
   const [myReviews, setMyReviews] = useState(() => {
     const savedReviews = localStorage.getItem("myReviews");
     return savedReviews ? JSON.parse(savedReviews) : {};
   });
+
   const [playlist, setPlaylist] = useState(() => {
     const savedPlaylist = localStorage.getItem("playlist");
     return savedPlaylist ? JSON.parse(savedPlaylist) : [];
   });
 
+  // Save changes to local storage
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
@@ -27,6 +31,7 @@ const MoviesContextProvider = (props) => {
     localStorage.setItem("playlist", JSON.stringify(playlist));
   }, [playlist]);
 
+  // Add a movie to favourites if it is not already saved
   const addToFavorites = (movie) => {
     setFavorites((current) =>
       current.includes(movie.id)
@@ -36,13 +41,20 @@ const MoviesContextProvider = (props) => {
   };
 
   const removeFromFavorites = (movie) => {
-    setFavorites(favorites.filter((mId) => mId !== movie.id));
+    setFavorites((current) =>
+      current.filter((movieId) => movieId !== movie.id)
+    );
   };
 
+  // Save a review for a movie
   const addReview = (movie, review) => {
-    setMyReviews({ ...myReviews, [movie.id]: review });
+    setMyReviews((current) => ({
+      ...current,
+      [movie.id]: review,
+    }));
   };
 
+  // Add a movie to the playlist if it is not already saved
   const addToPlaylist = (movie) => {
     setPlaylist((current) =>
       current.includes(movie.id)
@@ -52,7 +64,9 @@ const MoviesContextProvider = (props) => {
   };
 
   const removeFromPlaylist = (movie) => {
-    setPlaylist(playlist.filter((movieId) => movieId !== movie.id));
+    setPlaylist((current) =>
+      current.filter((movieId) => movieId !== movie.id)
+    );
   };
 
   return (
@@ -63,9 +77,9 @@ const MoviesContextProvider = (props) => {
         removeFromFavorites,
         myReviews,
         addReview,
+        playlist,
         addToPlaylist,
         removeFromPlaylist,
-        playlist
       }}
     >
       {props.children}

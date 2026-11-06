@@ -32,11 +32,14 @@ export default function MovieDetails({
   credits,
   recommendations,
 }) {
+  // Track whether the reviews drawer is open or not
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+    // Show the first five cast members and recommendations
   const cast = credits?.cast?.slice(0, 5) || [];
   const suggested = recommendations?.results?.slice(0, 5) || [];
 
+  // Set up the main movie information
   const facts = [
     ["Release", movie.release_date || "Unknown"],
     ["Runtime", movie.runtime ? `${movie.runtime} min` : "Unknown"],
