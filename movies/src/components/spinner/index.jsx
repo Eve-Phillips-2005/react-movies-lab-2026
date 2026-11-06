@@ -1,16 +1,18 @@
-import CircularProgress from '@mui/material/CircularProgress';
+import { Box, CircularProgress } from "@mui/material";
 
 // Show a loading indicator
 export default function CircularIndeterminate() {
   return (
-    <div sx={{
-        display: 'flex',
+    <Box
+      sx={{
+        display: "flex",
         justifyContent: "center",
-        '& > * + *': {
-          marginLeft: '2em',
-        }}}>
+        alignItems: "center",
+        gap: 2,
+        py: 4,
+      }}
+    >
       <CircularProgress />
-      <CircularProgress />
-    </div>
+    </Box>
   );
 }
