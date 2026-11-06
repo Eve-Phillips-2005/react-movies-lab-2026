@@ -7,6 +7,7 @@ const AddToPlaylistIcon = ({ movie }) => {
 
   const context = useContext(MoviesContext);
 
+  // Add the selected movie to the playlist
   const handleAddToPlaylist = (e) => {
     e.preventDefault();
     context.addToPlaylist(movie);

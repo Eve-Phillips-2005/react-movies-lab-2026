@@ -5,8 +5,7 @@ import { getUpcomingMovies } from "../api/tmdb-api";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 
-// Fetch upcoming movies through React Query, which handles
-// caching, loading states, and errors automatically
+// Get upcoming movies from TMDB
 const UpcomingPage = () => {
   const { data: movies = [], error, isPending, isError } = useQuery({
     queryKey: ["upcoming"],
@@ -21,7 +20,6 @@ const UpcomingPage = () => {
     return <h1>{error.message}</h1>;
   }
 
-  // The fetched movies are passed to PageTemplate below
   return (
     <PageTemplate
       title='Upcoming Movies'

@@ -6,7 +6,7 @@ import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 const PopularMoviesPage = () => {
-  // Fetch and cache popular movies separately from other movie lists.
+  // Get popular movies from TMDB
   const {
     data: movies = [],
     error,

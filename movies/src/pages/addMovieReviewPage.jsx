@@ -8,6 +8,7 @@ import Spinner from "../components/spinner";
 
 export default function WriteReviewPage() {
   const location = useLocation();
+  // Get the movie id passed to the review form
   const movieId = location.state?.movieId;
 
   const { data: movie, error, isPending, isError } = useQuery({

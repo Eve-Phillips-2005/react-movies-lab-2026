@@ -15,6 +15,7 @@ export default function TemplateMoviePage({ movie, children }) {
     queryFn: getMovieImages,
   });
 
+  // Use another poster if the main one is missing
   const posterPath =
     movie.poster_path || data?.posters?.[0]?.file_path;
 

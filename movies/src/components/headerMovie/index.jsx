@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router";
 
+// Show the movie header and navigation
 const MovieHeader = (props) => {
   const movie = props.movie;
   const navigate = useNavigate();

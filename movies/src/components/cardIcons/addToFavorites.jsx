@@ -6,6 +6,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 const AddToFavoritesIcon = ({ movie }) => {
   const context = useContext(MoviesContext);
 
+  // Add the selected movie to favourites
   const handleAddToFavorites = (e) => {
     e.preventDefault();
     context.addToFavorites(movie);

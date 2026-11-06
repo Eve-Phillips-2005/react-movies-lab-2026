@@ -1,5 +1,6 @@
 import CircularProgress from '@mui/material/CircularProgress';
 
+// Show a loading indicator
 export default function CircularIndeterminate() {
   return (
     <div sx={{

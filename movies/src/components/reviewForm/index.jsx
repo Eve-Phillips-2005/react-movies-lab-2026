@@ -39,6 +39,7 @@ export default function ReviewForm({ movie }) {
     formState: { errors },
   } = useForm({ defaultValues });
 
+  // Save the review for the selected movie
   const onSubmit = (values) => {
     addReview(movie, {
       ...values,

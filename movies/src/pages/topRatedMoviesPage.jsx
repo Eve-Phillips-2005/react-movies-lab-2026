@@ -6,7 +6,7 @@ import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 const TopRatedMoviesPage = () => {
-  // Fetch and cache top-rated movies separately from other movie lists.
+  // Get top rated movies from TMDB
   const {
     data: movies = [],
     error,

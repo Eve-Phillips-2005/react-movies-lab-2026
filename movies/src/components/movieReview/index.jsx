@@ -1,5 +1,6 @@
 import { Box, Typography, Divider } from "@mui/material";
 
+// Display the full audience review
 export default function MovieReview({ review }) {
   return (
     <Box sx={{ maxWidth: 760 }}>

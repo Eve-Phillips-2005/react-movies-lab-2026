@@ -6,6 +6,7 @@ import MovieReview from "../components/movieReview";
 export default function MovieReviewPage() {
   const location = useLocation();
   const movie = location.state?.movie;
+  // Get the selected review from navigation state
   const review = location.state?.review;
 
   if (!movie || !review) {

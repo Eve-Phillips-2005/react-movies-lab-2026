@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 const PlaylistPage = () => {
   const { playlist, removeFromPlaylist } = useContext(MoviesContext);
 
+  // Load each movie saved in the playlist
   const movieQueries = useQueries({
     queries: playlist.map((movieId) => ({
       queryKey: ["movie", { id: movieId }],

@@ -17,6 +17,7 @@ export default function MovieCard({ movie, action }) {
   const { favorites } = useContext(MoviesContext);
   const isFavorite = favorites.includes(movie.id);
 
+  // Use a placeholder when no poster is available
   const poster = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
     : img;

@@ -5,6 +5,7 @@ import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
+// Show the page title and navigation
 const Header = (props ) => {
   const title = props.title;
   const navigate = useNavigate();

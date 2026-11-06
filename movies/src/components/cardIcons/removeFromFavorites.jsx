@@ -6,6 +6,7 @@ import { MoviesContext } from "../../contexts/moviesContextDefinition.js";
 const RemoveFromFavoritesIcon = ({ movie }) => {
   const context = useContext(MoviesContext);
 
+  // Remove the selected movie from favourites
   const handleRemoveFromFavorites = (e) => {
     e.preventDefault();
     context.removeFromFavorites(movie);

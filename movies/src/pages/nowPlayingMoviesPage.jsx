@@ -6,7 +6,7 @@ import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
 const NowPlayingMoviesPage = () => {
-  // Fetch and cache now playing movies separately from other movie lists.
+  // Get movies currently playing in cinemas
   const {
     data: movies = [],
     error,

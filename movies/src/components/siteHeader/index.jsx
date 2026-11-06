@@ -29,6 +29,7 @@ export default function SiteHeader() {
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState(null);
 
+  // Close the menu before changing pages
   const handleNavigate = (path) => {
     setAnchorEl(null);
     navigate(path);

@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
+// Set the app colours and typography
 const theme = createTheme({
   palette: {
     mode: "dark",

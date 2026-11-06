@@ -5,6 +5,7 @@ import Spinner from "../components/spinner";
 import AddToFavoritesIcon from "../components/cardIcons/addToFavorites";
 import AddToPlaylistIcon from "../components/cardIcons/addToPlaylist";
 
+// Load movies for the discover page
 const HomePage = () => {
   const { data, error, isPending, isError } = useQuery({
     queryKey: ["discover"],
